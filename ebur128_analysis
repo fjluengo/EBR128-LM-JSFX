@@ -58,13 +58,13 @@ slider7:0<0,60,0.1>-_OUT: LRA Disp
 ////////////////////////////////////////
 
 slider9:0<0,3,{2.0 Stereo,4.0 Surround,4.1 Surround,5.1 Surround>Channel Config
-slider11:-144<-144,6,0.1>IL LUFS
-slider12:-144<-144,6,0.1>ML LUFS
-slider13:-144<-144,6,0.1>ML Max LUFS
-slider14:-144<-144,6,0.1>SL LUFS
-slider15:-144<-144,6,0.1>SL Max LUFS
-slider16:-144<-144,6,0.01>TP dB
-slider17:0<0,60,0.1>LRA LU
+slider11:-144<-144,6,0.1>Integrated Loudness LUFS
+slider12:-144<-144,6,0.1>Momentary Loudness LUFS
+slider13:-144<-144,6,0.1>Momentary Loudness Max LUFS
+slider14:-144<-144,6,0.1>Short-Term Loudness LUFS
+slider15:-144<-144,6,0.1>Short-Term Loudness Max LUFS
+slider16:-144<-144,6,0.01>True Peak dB
+slider17:0<0,60,0.1>Loudness Range LU
 
 slider61:1<0,1,1{Off,On}>Synced
 
