@@ -98,7 +98,7 @@ slider24:0<0,36000,1>-test
   slider_automate(slider6);
   slider_automate(slider7);
 
-  SHOW_RLA_INFO = 0;
+  SHOW_RLA_INFO = 1;
 
 // EO@init
 
@@ -158,31 +158,31 @@ do_measure = 0;
   );
 // EO@sample
 
-@gfx 400 50
+@gfx 400 60
 
   (SHOW_RLA_INFO)?
   (
   // Max dB Value
   gfx_r=gfx_g=gfx_b=1.0; gfx_a=1.0;
-  gfx_x = 0;
+  gfx_x = 10;
   gfx_y = 10;
   gfx_drawstr("LRA Low : ");
   gfx_drawnumber(slider21,2);
   gfx_drawstr(" db"); 
 
-  gfx_x = 0;
+  gfx_x = 10;
   gfx_y = 20;
   gfx_drawstr("LRA High: ");
   gfx_drawnumber(slider22,2);
   gfx_drawstr(" db"); 
 
-  gfx_x = 0;
+  gfx_x = 10;
   gfx_y = 30;
   gfx_drawstr("LRA Diff: ");
   gfx_drawnumber(slider23,2);
   gfx_drawstr(" db"); 
 
-  gfx_x = 0;
+  gfx_x = 10;
   gfx_y = 40;
   gfx_drawstr("LRA Cont: ");
   gfx_drawnumber(slider24,0);
