@@ -58,13 +58,13 @@ slider7:0<0,60,0.1>-_OUT: LRA Disp
 ////////////////////////////////////////
 
 slider9:0<0,3,{2.0 Stereo,4.0 Surround,4.1 Surround,5.1 Surround>Channel Config
-slider11:-144<-144,6,0.1>Integrated Loudness LUFS
-slider12:-144<-144,6,0.1>Momentary Loudness LUFS
-slider13:-144<-144,6,0.1>Momentary Loudness Max LUFS
-slider14:-144<-144,6,0.1>Short-Term Loudness LUFS
-slider15:-144<-144,6,0.1>Short-Term Loudness Max LUFS
-slider16:-144<-144,6,0.01>True Peak dB
-slider17:0<0,60,0.1>Loudness Range LU
+slider11:-144<-144,6,0.1>-Integrated Loudness LUFS
+slider12:-144<-144,6,0.1>-Momentary Loudness LUFS
+slider13:-144<-144,6,0.1>-Momentary Loudness Max LUFS
+slider14:-144<-144,6,0.1>-Short-Term Loudness LUFS
+slider15:-144<-144,6,0.1>-Short-Term Loudness Max LUFS
+slider16:-144<-144,6,0.01>-True Peak dB
+slider17:0<0,60,0.1>-Loudness Range LU
 
 slider61:1<0,1,1{Off,On}>Synced
 
@@ -98,7 +98,7 @@ slider24:0<0,36000,1>-test
   slider_automate(slider6);
   slider_automate(slider7);
 
-  SHOW_RLA_INFO = 1;
+  SHOW_RLA_INFO = 0;
 
 // EO@init
 
@@ -159,7 +159,7 @@ do_measure = 0;
 // EO@sample
 
 @gfx 400 60
-
+  gfx_setfont(0);
   (SHOW_RLA_INFO)?
   (
   // Max dB Value
@@ -193,7 +193,7 @@ do_measure = 0;
   gfx_b = 0.0;
   gfx_a = 1.0;
   
-  resetx = 380;
+  resetx = 445;
   reset_posY = 10;
     
   gfx_x = resetx;
@@ -249,4 +249,142 @@ do_measure = 0;
     slider_automate(slider6);
     slider_automate(slider7);
   );
+  
+  // UI by ElFerna
+  // color setup
+  function dark_blue() (
+  gfx_r = 0.12;
+  gfx_g = 0.15;
+  gfx_b = 0.20;
+  );
+  
+  function darker_blue() (
+  gfx_r = 0.05;
+  gfx_g = 0.05;
+  gfx_b = 0.1;
+  );
+  
+  function light_grey() (
+  gfx_r = 0.8;
+  gfx_g = 0.8;
+  gfx_b = 0.8;
+  );
+  
+  function peak_color() (
+  gfx_r = 1;
+  gfx_g = 0;
+  gfx_b = 0.5; 
+  );
+  
+  //title
+  gfx_x = 10;
+  gfx_drawstr("EBUR128 Loudness Meter");
+  
+  
+  //background
+  dark_blue();
+  gfx_rect(0,25,gfx_w,145);
+  
+  darker_blue();
+  gfx_a = 0.7;
+  gfx_rect(10,120,gfx_w - 20,43);
+  
+  //labels
+  gfx_a = 1;
+  function align_down(x_pos,y_mov) (
+  gfx_x = x_pos;
+  gfx_y += y_mov;
+  );
+  
+  gfx_x = 10;
+  gfx_y = 50;
+  light_grey();
+  gfx_drawstr("Short Term");
+  align_down(10,25);
+  gfx_drawstr("Momentary");
+  align_down(10,25);
+  gfx_drawstr("Integrated");
+
+  gfx_x = 20;
+  gfx_y = 130;
+  gfx_drawstr("Loudness Range: ");
+  gfx_drawnumber(slider17,2);
+  gfx_drawstr(" LU");
+  gfx_x = 20;
+  gfx_y = 145;
+  gfx_drawstr("True Peak: ");
+  gfx_x+=32;
+  gfx_drawnumber(slider16,2);
+  gfx_drawstr(" dB");
+  
+  //meter_bg
+  gfx_a = 0.15;
+  y_pos = 47;
+  loop(3,
+  gfx_rect(130,y_pos,249,15);
+  y_pos += 25;
+  );
+  
+  gfx_a = 1;
+  function meter_scale(value, max_value, meter_width) (
+  meter_width + (value * meter_width / max_value);
+  );
+  
+  
+  //meters itself!!
+  light_grey();
+  y_pos = 47;
+  space = 25;
+  gfx_rect(130,y_pos,meter_scale(slider14,60,250),15);
+  y_pos+=space;
+  gfx_rect(130,y_pos,meter_scale(slider12,60,250),15);
+  y_pos+=space;
+  gfx_rect(130,y_pos,meter_scale(slider11,60,250),15);
+  
+  
+  //meter_stripes
+  dark_blue();
+  gfx_a = 1;
+  y_pos = 47;
+  x_pos = 134;
+  loop(62,
+  gfx_rect(x_pos,y_pos,1,65);
+  x_pos+=4;
+  );
+  
+  //peaks
+  peak_color();
+  gfx_a = 1;
+  y_pos = 47;
+  x_pos = 130 + meter_scale(slider15,60,250);
+  space = 25;
+  gfx_rect(x_pos,y_pos, 4,15);
+  gfx_x = x_pos+=8;
+  gfx_y = y_pos + 4;
+  gfx_drawnumber(slider15,2);
+  
+  x_pos = 130 + meter_scale(slider13,60,250);
+  y_pos+=space;
+  gfx_rect(x_pos,y_pos,4,15);
+  gfx_x = x_pos+=8;
+  gfx_y = y_pos + 4;
+  gfx_drawnumber(slider13,2);
+  
+  
+  // number_labels
+  light_grey();
+  gfx_x = 395; gfx_y = 50; gfx_a = 1;
+  gfx_drawnumber(slider14,2);
+  gfx_drawstr(" LUFS");
+  align_down(395,25);
+  gfx_drawnumber(slider12,2);
+  gfx_drawstr(" LUFS");
+  align_down(395,25);
+  gfx_drawnumber(slider11,2);
+  gfx_drawstr(" LUFS");
+  align_down(395,25);
+  
+  
+  
+  
 // EOL@GFX
