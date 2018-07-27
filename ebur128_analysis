@@ -161,33 +161,6 @@ do_measure = 0;
 
 @gfx 500 171
   gfx_setfont(0);
-  (SHOW_RLA_INFO)?
-  (
-  // Max dB Value
-  gfx_r=gfx_g=gfx_b=1.0; gfx_a=1.0;
-  gfx_x = 10;
-  gfx_y = 10;
-  gfx_drawstr("LRA Low : ");
-  gfx_drawnumber(slider21,2);
-  gfx_drawstr(" db"); 
-
-  gfx_x = 10;
-  gfx_y = 20;
-  gfx_drawstr("LRA High: ");
-  gfx_drawnumber(slider22,2);
-  gfx_drawstr(" db"); 
-
-  gfx_x = 10;
-  gfx_y = 30;
-  gfx_drawstr("LRA Diff: ");
-  gfx_drawnumber(slider23,2);
-  gfx_drawstr(" db"); 
-
-  gfx_x = 10;
-  gfx_y = 40;
-  gfx_drawstr("LRA Cont: ");
-  gfx_drawnumber(slider24,0);
-  );
   // Reset
   gfx_r = 0.0;
   gfx_g = 1.0;
@@ -251,7 +224,7 @@ do_measure = 0;
     slider_automate(slider7);
   );
   
-  // UI by ElFerna
+  // UI mod by ElFerna
   btn_wait = 5; //in frames
   
   
@@ -319,7 +292,12 @@ do_measure = 0;
   gfx_y = 130;
   gfx_drawstr("Loudness Range: ");
   gfx_drawnumber(slider17,2);
-  gfx_drawstr(" LU");
+  gfx_drawstr(" LU [");
+  gfx_drawnumber(slider21,2);
+  gfx_drawstr(" | ");
+  gfx_drawnumber(slider22,2);
+  gfx_drawstr("]");
+  
   gfx_x = 20;
   gfx_y = 145;
   gfx_drawstr("True Peak: ");
