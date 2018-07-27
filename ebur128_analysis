@@ -66,7 +66,7 @@ slider15:-144<-144,6,0.1>-Short-Term Loudness Max LUFS
 slider16:-144<-144,6,0.01>-True Peak dB
 slider17:0<0,60,0.1>-Loudness Range LU
 
-slider61:1<0,1,1{Off,On}>Synced
+slider61:1<0,1,1{Off,On}>-Synced
 
 slider21:-144<-144,6,0.01>-test
 slider22:-144<-144,6,0.01>-test
@@ -74,6 +74,7 @@ slider23:-144<-144,6,0.01>-test
 slider24:0<0,36000,1>-test
 
 @init
+
   // Init our small mem manager, just to manage our own memory and align to foreign code/mem
   MM.MemMgr_Init(0);
 
@@ -251,6 +252,9 @@ do_measure = 0;
   );
   
   // UI by ElFerna
+  btn_wait = 5; //in frames
+  
+  
   // color setup
   function dark_blue() (
   gfx_r = 0.12;
@@ -270,10 +274,16 @@ do_measure = 0;
   gfx_b = 0.8;
   );
   
+  function light_green() (
+  gfx_r = 0.1;
+  gfx_g = 0.6;
+  gfx_b = 0.3;
+  );
+  
   function peak_color() (
-  gfx_r = 1;
-  gfx_g = 0;
-  gfx_b = 0.5; 
+  gfx_r = 0.9;
+  gfx_g = 0.1;
+  gfx_b = 0.4; 
   );
   
   //title
@@ -287,7 +297,7 @@ do_measure = 0;
   
   darker_blue();
   gfx_a = 0.7;
-  gfx_rect(10,120,gfx_w - 20,43);
+  gfx_rect(10,120,gfx_w - 20,43);  
   
   //labels
   gfx_a = 1;
@@ -317,10 +327,36 @@ do_measure = 0;
   gfx_drawnumber(slider16,2);
   gfx_drawstr(" dB");
   
-  gfx_x = 350;
-  gfx_y = 130;
-  gfx_drawstr("Sync: ");
-  gfx_drawstr(slider61 ? "on" : "off");
+  // sync status
+  // set position
+  sync_btn_x1=375;
+  sync_btn_y1=133;
+  
+  light_grey();
+  gfx_rect(sync_btn_x1,sync_btn_y1,102,17);
+  
+  slider61 ? light_green() : peak_color();
+  gfx_rect(sync_btn_x1 + 1,sync_btn_y1 + 1,100,15);
+  gfx_x = sync_btn_x1 + 22;
+  gfx_y = sync_btn_y1 + 5;
+  light_grey();
+  gfx_drawstr(slider61 ? "Sync on" : "Sync off");
+  
+  mouse_cap ?
+  (mouse_x >= sync_btn_x1 &&
+  mouse_x <= sync_btn_x1 + 100 &&
+  mouse_y >= sync_btn_y1 &&
+  mouse_y <= (sync_btn_y1 + 15) &&
+  btn_timer === 0)
+  ? 
+  (slider61 ? 
+    (slider61=0;
+    btn_timer = btn_wait;) : 
+    (slider61=1;
+    btn_timer = btn_wait;)
+  );
+  
+  btn_timer ? btn_timer-=1;
   
   //meter_bg
   gfx_a = 0.15;
@@ -404,8 +440,5 @@ do_measure = 0;
   gfx_drawnumber(slider11,2);
   gfx_drawstr(" LUFS");
   align_down(395,25);
-  
-  
-  
   
 // EOL@GFX
