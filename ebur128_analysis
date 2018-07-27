@@ -159,7 +159,7 @@ do_measure = 0;
   );
 // EO@sample
 
-@gfx 400 60
+@gfx 500 171
   gfx_setfont(0);
   (SHOW_RLA_INFO)?
   (
