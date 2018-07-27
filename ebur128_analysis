@@ -42,7 +42,7 @@
 // 2.3: TB-Measurement according BS.1770-4
 // 2.4: More LRA info, LRA buffer fix
 
-desc:EBUR128 Loudness Measurement V2.4 (TBProAudio)
+desc:EBUR128 Loudness Measurement (ELFERNA)V1
 import memorymanager.jsfx-inc
 import ebur128.jsfx-inc
 
@@ -164,34 +164,122 @@ do_measure = 0;
   btn_wait = 5; //in frames
   n_acc = 1;    // number accuracy in labels
   
-  gfx_setfont(0);
-  // Reset
-  gfx_r = 0.0;
-  gfx_g = 1.0;
-  gfx_b = 0.0;
-  gfx_a = 1.0;
-  
-  resetx = 445;
-  reset_posY = 10;
+  // color setup
+    function dark_blue() (
+    gfx_r = 0.12;
+    gfx_g = 0.15;
+    gfx_b = 0.20;
+    );
     
-  gfx_x = resetx;
-  gfx_y = reset_posY;
-  gfx_drawchar($'R');
-  gfx_drawchar($'E');
-  gfx_drawchar($'S');
-  gfx_drawchar($'E');
-  gfx_drawchar($'T');
-  resetx2 = gfx_x;
+    function darker_blue() (
+    gfx_r = 0.08;
+    gfx_g = 0.08;
+    gfx_b = 0.1;
+    );
+    
+    function light_grey() (
+    gfx_r = 0.8;
+    gfx_g = 0.8;
+    gfx_b = 0.8;
+    );
+
+    function dark_grey() (
+    gfx_r = 0.2;
+    gfx_g = 0.2;
+    gfx_b = 0.2;
+    );
+    
+    function light_green() (
+    gfx_r = 0.1;
+    gfx_g = 0.6;
+    gfx_b = 0.3;
+    );
+    
+    function peak_color() (
+    gfx_r = 0.9;
+    gfx_g = 0.1;
+    gfx_b = 0.4; 
+    );
   
-  doreset = 0;
+  gfx_setfont(0);
+  
+  // HEADER
+  darker_blue();
+  gfx_rect(0,0,gfx_w,25);
+  light_grey();
+  gfx_a = 0.3;
+  gfx_rect(0,23,gfx_w,2);
+  gfx_a = 1;
+  
+  //title
+  gfx_x = 10;
+  gfx_y = 9;
+  gfx_drawstr("EBUR128 Loudness Meter");
+  
+  // sync button
+  sync_btn_x1=283;
+  sync_btn_y1=3;
+  
+  light_grey();
+  gfx_rect(sync_btn_x1,sync_btn_y1,102,17);
+  
+  slider61 ? light_green() : peak_color();
+  
+  gfx_rect(sync_btn_x1 + 1,sync_btn_y1 + 1,100,15);
+  gfx_x = sync_btn_x1 + 22;
+  gfx_y = sync_btn_y1 + 5;
+  light_grey();
+  gfx_drawstr(slider61 ? "Sync on" : "Sync off");
+  
   mouse_cap ?
   (
-    mouse_x >= resetx && 
-    mouse_x <= resetx2 && 
-    mouse_y >= reset_posY && 
-    mouse_y <= reset_posY+gfx_texth 
-    ? doreset = 1;
+    mouse_x >= sync_btn_x1 &&
+    mouse_x <= sync_btn_x1 + 100 &&
+    mouse_y >= sync_btn_y1 &&
+    mouse_y <= (sync_btn_y1 + 15) &&
+    btn_timer === 0
+  )
+  ? 
+  (slider61 ? 
+    (slider61=0;
+    btn_timer = btn_wait;) : 
+    (slider61=1;
+    btn_timer = btn_wait;)
   );
+  btn_timer ? btn_timer-=1;
+  
+  //reset btn
+  reset_btn_x1 = 393;
+  reset_btn_y1 = 3;
+  
+  light_grey();
+  gfx_rect(reset_btn_x1, reset_btn_y1,102,17);
+  
+  (
+  mouse_x >= reset_btn_x1 &&
+  mouse_x <= reset_btn_x1 + 102 &&
+  mouse_y >= reset_btn_y1 &&
+  mouse_y <= reset_btn_y1 + 17
+  )? dark_blue() : dark_grey();
+  gfx_rect(reset_btn_x1 +1, reset_btn_y1 +1,100,15);
+  
+  
+  gfx_x = reset_btn_x1 + 32;
+  gfx_y = reset_btn_y1 + 5;  
+  
+  
+  light_grey();
+  gfx_drawstr("RESET");
+  
+  doreset = 0;
+  mouse_cap ? 
+  (
+    mouse_x >= reset_btn_x1 &&
+    mouse_x <= reset_btn_x1 + 100 &&
+    mouse_y >= reset_btn_y1 &&
+    mouse_y <= (reset_btn_y1 + 15) &&
+    btn_timer === 0
+  )? doreset = 1;
   
   doreset ?
   (
@@ -226,45 +314,8 @@ do_measure = 0;
     slider_automate(slider5);
     slider_automate(slider6);
     slider_automate(slider7);
-  );
+  ); 
   
-  
-  
-  
-  // color setup
-  function dark_blue() (
-  gfx_r = 0.12;
-  gfx_g = 0.15;
-  gfx_b = 0.20;
-  );
-  
-  function darker_blue() (
-  gfx_r = 0.05;
-  gfx_g = 0.05;
-  gfx_b = 0.1;
-  );
-  
-  function light_grey() (
-  gfx_r = 0.8;
-  gfx_g = 0.8;
-  gfx_b = 0.8;
-  );
-  
-  function light_green() (
-  gfx_r = 0.1;
-  gfx_g = 0.6;
-  gfx_b = 0.3;
-  );
-  
-  function peak_color() (
-  gfx_r = 0.9;
-  gfx_g = 0.1;
-  gfx_b = 0.4; 
-  );
-  
-  //title
-  gfx_x = 10;
-  gfx_drawstr("EBUR128 Loudness Meter");
   
   
   //background
@@ -285,9 +336,9 @@ do_measure = 0;
   gfx_x = 10;
   gfx_y = 50;
   light_grey();
-  gfx_drawstr("Short Term");
-  align_down(10,25);
   gfx_drawstr("Momentary");
+  align_down(10,25);
+  gfx_drawstr("Short Term");
   align_down(10,25);
   gfx_drawstr("Integrated");
 
@@ -295,11 +346,11 @@ do_measure = 0;
   gfx_y = 130;
   gfx_drawstr("Loudness Range: ");
   gfx_drawnumber(slider17,n_acc);
-  gfx_drawstr(" LU [");
+  gfx_drawstr(" LU [ ");
   gfx_drawnumber(slider21,n_acc);
   gfx_drawstr(" | ");
   gfx_drawnumber(slider22,n_acc);
-  gfx_drawstr("]");
+  gfx_drawstr(" ]");
   
   gfx_x = 20;
   gfx_y = 145;
@@ -310,37 +361,6 @@ do_measure = 0;
   gfx_drawstr(" dB");
   light_grey();
   
-  // sync status
-  // set position
-  sync_btn_x1=375;
-  sync_btn_y1=133;
-  
-  light_grey();
-  gfx_rect(sync_btn_x1,sync_btn_y1,102,17);
-  
-  slider61 ? light_green() : peak_color();
-  
-  gfx_rect(sync_btn_x1 + 1,sync_btn_y1 + 1,100,15);
-  gfx_x = sync_btn_x1 + 22;
-  gfx_y = sync_btn_y1 + 5;
-  light_grey();
-  gfx_drawstr(slider61 ? "Sync on" : "Sync off");
-  
-  mouse_cap ?
-  (mouse_x >= sync_btn_x1 &&
-  mouse_x <= sync_btn_x1 + 100 &&
-  mouse_y >= sync_btn_y1 &&
-  mouse_y <= (sync_btn_y1 + 15) &&
-  btn_timer === 0)
-  ? 
-  (slider61 ? 
-    (slider61=0;
-    btn_timer = btn_wait;) : 
-    (slider61=1;
-    btn_timer = btn_wait;)
-  );
-  
-  btn_timer ? btn_timer-=1;
   
   //meter_bg
   gfx_a = 0.15;
@@ -376,9 +396,9 @@ do_measure = 0;
   light_grey();
   y_pos = 47;
   space = 25;
-  gfx_rect(130,y_pos,meter_scale(slider14,60,250),15);
-  y_pos+=space;
   gfx_rect(130,y_pos,meter_scale(slider12,60,250),15);
+  y_pos+=space;
+  gfx_rect(130,y_pos,meter_scale(slider14,60,250),15);
   y_pos+=space;
   gfx_rect(130,y_pos,meter_scale(slider11,60,250),15);
   
@@ -397,28 +417,28 @@ do_measure = 0;
   peak_color();
   gfx_a = 1;
   y_pos = 47;
-  x_pos = 130 + meter_scale(slider15,60,250);
+  x_pos = 130 + meter_scale(slider13,60,250);
   space = 25;
   gfx_rect(x_pos,y_pos, 4,15);
   gfx_x = x_pos+=8;
   gfx_y = y_pos + 4;
-  gfx_drawnumber(slider15,n_acc);
+  gfx_drawnumber(slider13,n_acc);
   
-  x_pos = 130 + meter_scale(slider13,60,250);
+  x_pos = 130 + meter_scale(slider15,60,250);
   y_pos+=space;
   gfx_rect(x_pos,y_pos,4,15);
   gfx_x = x_pos+=8;
   gfx_y = y_pos + 4;
-  gfx_drawnumber(slider13,n_acc);
+  gfx_drawnumber(slider15,n_acc);
   
   
   // number_labels
   light_grey();
   gfx_x = 405; gfx_y = 51; gfx_a = 1;
-  gfx_drawnumber(slider14,n_acc);
+  gfx_drawnumber(slider12,n_acc);
   gfx_drawstr(" LUFS");
   align_down(405,25);
-  gfx_drawnumber(slider12,n_acc);
+  gfx_drawnumber(slider14,n_acc);
   gfx_drawstr(" LUFS");
   align_down(405,25);
   gfx_drawnumber(slider11,n_acc);
