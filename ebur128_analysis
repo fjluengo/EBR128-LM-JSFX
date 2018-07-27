@@ -317,6 +317,11 @@ do_measure = 0;
   gfx_drawnumber(slider16,2);
   gfx_drawstr(" dB");
   
+  gfx_x = 350;
+  gfx_y = 130;
+  gfx_drawstr("Sync: ");
+  gfx_drawstr(slider61 ? "on" : "off");
+  
   //meter_bg
   gfx_a = 0.15;
   y_pos = 47;
@@ -330,8 +335,24 @@ do_measure = 0;
   meter_width + (value * meter_width / max_value);
   );
   
+  //meters scale
+  light_grey();
+  gfx_setfont(1,"Arial",10);
+  left_margin = 122;
+  gfx_x = left_margin;
+  gfx_y = 30;
+  number = -60;
+  
+  loop(7,
+   gfx_x+=meter_scale(number,60,250);
+   gfx_drawnumber(number,0);
+   number+=10;
+   gfx_x = left_margin;
+  );
+  
   
   //meters itself!!
+  gfx_setfont(0);
   light_grey();
   y_pos = 47;
   space = 25;
