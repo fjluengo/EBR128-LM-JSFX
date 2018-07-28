@@ -42,7 +42,7 @@
 // 2.3: TB-Measurement according BS.1770-4
 // 2.4: More LRA info, LRA buffer fix
 
-desc:EBUR128 Loudness Measurement (ELFERNA)V1
+desc:EBUR128 Loudness Meter (ELFERNA)V1.0
 import memorymanager.jsfx-inc
 import ebur128.jsfx-inc
 
