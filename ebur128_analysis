@@ -344,18 +344,15 @@ do_measure = 0;
 
   gfx_x = 20;
   gfx_y = 130;
-  gfx_drawstr("Loudness Range: ");
+  gfx_drawstr("Range  ");
+  gfx_x+=345;
   gfx_drawnumber(slider17,n_acc);
-  gfx_drawstr(" LU [ ");
-  gfx_drawnumber(slider21,n_acc);
-  gfx_drawstr(" | ");
-  gfx_drawnumber(slider22,n_acc);
-  gfx_drawstr(" ]");
+  gfx_drawstr(" LU");
   
   gfx_x = 20;
   gfx_y = 145;
-  gfx_drawstr("True Peak: ");
-  gfx_x+=32;
+  gfx_drawstr("True Peak  ");
+  gfx_x+=15;
   slider16 > 0 ? (peak_color(); gfx_x+=8;);
   gfx_drawnumber(slider16,n_acc);
   gfx_drawstr(" dB");
@@ -369,6 +366,9 @@ do_measure = 0;
   gfx_rect(130,y_pos,249,15);
   y_pos += 25;
   );
+  
+  y_pos = 128;
+  gfx_rect(130,y_pos,249,11);
   
   gfx_a = 1;
   function meter_scale(value, max_value, meter_width) (
@@ -401,6 +401,24 @@ do_measure = 0;
   gfx_rect(130,y_pos,meter_scale(slider14,60,250),15);
   y_pos+=space;
   gfx_rect(130,y_pos,meter_scale(slider11,60,250),15);
+  
+  //loudness range
+  light_green();
+  gfx_x = 130 + meter_scale(slider21,60,250);
+  gfx_y = 128;
+  meter_x2 = 130 + meter_scale(slider22,60,250);
+  gfx_rectto(meter_x2,138);
+  
+  (slider21 !== 0 && slider22 !== 0) ? 
+  (
+  gfx_y = 130;
+  gfx_x = 130 + meter_scale(slider21,60,250) - 45;
+  light_grey();
+  gfx_drawnumber(slider21,n_acc);
+  gfx_x =  130 + meter_scale(slider22,60,250)+3;
+  gfx_drawnumber(slider22,n_acc); 
+  );
+  
   
   
   //meter_stripes
