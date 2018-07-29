@@ -200,6 +200,12 @@ do_measure = 0;
     gfx_g = 0.1;
     gfx_b = 0.4; 
     );
+    
+    function orange() (
+    gfx_r = 0.7;
+    gfx_g = 0.35;
+    gfx_b = 0.1;
+    );
   
   gfx_setfont(0);
   
@@ -260,7 +266,7 @@ do_measure = 0;
   mouse_x <= reset_btn_x1 + 102 &&
   mouse_y >= reset_btn_y1 &&
   mouse_y <= reset_btn_y1 + 17
-  )? dark_blue() : dark_grey();
+  )? orange() : dark_blue();
   gfx_rect(reset_btn_x1 +1, reset_btn_y1 +1,100,15);
   
   
